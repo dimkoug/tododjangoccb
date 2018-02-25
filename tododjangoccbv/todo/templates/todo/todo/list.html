@@ -1,0 +1,44 @@
+{% extends "todo/base.html" %}
+{% load model_extracts %}
+{% block scripts %}
+{{ block.super }}
+<script>
+
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie != '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+  var csrftoken = getCookie('csrftoken');
+</script>
+
+{% endblock scripts %}
+
+
+
+{% block content %}
+{% show_modal_button model %}
+    <table id="{{model|model_name_lower}}-table" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% include 'todo/todo/partial_list.html' %}
+      </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load model_extracts %}
+
+{% block partial_list %}
+{% for object in object_list %}
+<tr>
+  <th scope="row">{{object.pk}}</th>
+  <td><a href="{{object|url_detail:object.pk}}">{{object.title}}</a></td>
+  <td>
+    <button type="button"
+        class="btn btn-warning btn-sm js-update-{{object|model_name_lower}}"
+        data-url="{{object|url_update:object.pk}}">
+  <span class="glyphicon glyphicon-pencil"></span> Edit
+</button>
+<button type="button"
+    class="btn btn-danger btn-sm js-delete-{{object|model_name_lower}}"
+    data-url="{{object|url_delete:object.pk}}">
+<span class="glyphicon glyphicon-trash"></span> Delete
+</button>
+  </td>
+</tr>
+{% endfor %}
+
+
+{% endblock partial_list %}

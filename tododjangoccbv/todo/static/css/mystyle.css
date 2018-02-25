@@ -1,0 +1,92 @@
+#loading {
+  background-color: #f0f0f0;
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  width: 120px;
+  height:30px;
+  text-align: center;
+  position:absolute;
+  right: 74px;
+  top:180px;
+}
+#result {
+  background-color: #f0f0f0;
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  width: 200px;
+  height:30px;
+  text-align: center;
+  position:absolute;
+  right: 74px;
+  top:180px;
+}
+
+#map {
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  /*overflow: hidden;
+  margin: 20px auto;*/
+  height: 600px;
+  width: 100%;
+}
+
+#error {
+  background-color: #f0f0f0;
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  width: 500px;
+  height:30px;
+  text-align: center;
+  position:absolute;
+top:0;
+right:15px;
+}
+
+#polygon {
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  right: 60px;
+  margin-top: -70px;
+  z-index: 100;
+  text-align: center;
+  position:absolute;
+}
+
+#route {
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  right: 60px;
+  margin-top: -70px;
+  z-index: 100;
+  text-align: center;
+  position:absolute;
+}
+
+#clear {
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  left: 60px;
+  margin-top: -70px;
+  z-index: 100;
+  text-align: center;
+  position:absolute;
+}
+
+#edit {
+  box-shadow: 3px 3px 20px 3px #a9a3a3;
+  border: 1px solid #a0a0a0;
+  border-radius: 8px;
+  left: 50%;
+  right: 50%;
+  margin-top: -70px;
+  z-index: 100;
+  text-align: center;
+  position:absolute;
+}
