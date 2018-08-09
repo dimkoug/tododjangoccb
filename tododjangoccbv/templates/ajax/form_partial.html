@@ -1,7 +1,7 @@
 {% for field in form %}
-  <div class="form-group{% if field.errors %} has-error{% endif %}">
+  <div class="form-group {% if field.errors %} has-error {% endif %}">
     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-    {{field}}
+      {{field}}
     {% for error in field.errors %}
       <p class="help-block">{{ error }}</p>
     {% endfor %}

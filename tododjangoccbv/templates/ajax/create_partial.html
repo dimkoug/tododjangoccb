@@ -1,7 +1,7 @@
 {% load model_extracts %}
 
 {% block create_partial %}
-<form  method="post" action="{{model|url_create}}" class="js-{{model|model_name_lower}}-create-form">
+<form  method="post" action="{{model|url_create}}" class="js-{{model|model_name_lower}}-create-form" novalidate>
   {% csrf_token %}
   <div class="modal-header">
     <h4 class="modal-title">Create a new {{model|model_name_lower}}</h4>
