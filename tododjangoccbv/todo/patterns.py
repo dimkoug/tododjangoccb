@@ -69,7 +69,7 @@ def get_patterns(apps_dict):
                 deleteview = getattr(app_module, '{}DeleteView'.format(
                     model_name)).as_view()
                 urlpatterns += [
-                    path('{}/{}/<int:pk>/delete/$'.format(
+                    path('{}/{}/<int:pk>/delete/'.format(
                         app_name, model_name_lower),
                         deleteview,
                         name='{}-{}-delete'.format(
