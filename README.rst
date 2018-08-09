@@ -15,9 +15,8 @@ Quick start
 
 3. Activate virtualenv
 
-4. Install django::
+4. Install packages from requirements.txt file
 
-    pip install django
 
 5. Create settings_local.py with settings from settings_local_sample.py
 
