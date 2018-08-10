@@ -12,22 +12,14 @@
 
     <title>{% block title %}{% endblock title %}</title>
     {% block stylesheets %}
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/jumbotron.css' %}" rel="stylesheet">
-    <link href="{% static 'css/navbar-fixed-top.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap4/css/font-awesome.min.css' %}" rel="stylesheet">
     {% endblock stylesheets %}
 
     {% block scripts %}
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+    <script src="{% static 'bootstrap4/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap4/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
     {% endblock scripts %}
 
 
@@ -42,29 +34,25 @@
   <body id="{% block page_id %}{% endblock page_id %}" class="{% block body_class %}{% endblock body_class %}" {% block body_attrs %}{% endblock body_attrs %}>
     {% block body %}
     {% block navbar %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
+    <header>
+      <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <a class="navbar-brand" href="{% url 'todo-list' %}">Todo List</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </header>
+
 
     {% endblock navbar %}
 
 
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="container-fluid">
-      {% block content %}{% endblock content %}
-    </div> <!-- /container -->
+    <main role="main" class="pt-4">
+      <div class="container">
+        {% block content %}{% endblock content %}
+      </div> <!-- /container -->
+    </main>
 
 
     {% endblock body %}

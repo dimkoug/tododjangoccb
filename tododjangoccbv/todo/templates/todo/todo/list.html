@@ -28,7 +28,10 @@
 
 
 {% block content %}
-{% show_modal_button model %}
+  <div class="row">
+    {% show_modal_button model %}
+  </div>
+  <div class="row">
     <table id="{{model|model_name_lower}}-table" class="table">
       <thead class="thead-dark">
         <tr>
@@ -41,4 +44,7 @@
         {% include 'todo/todo/partial_list.html' %}
       </tbody>
     </table>
+  </div>
+
+
 {% endblock %}
