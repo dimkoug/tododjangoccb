@@ -1,4 +1,4 @@
-{% load model_extracts %}
+{% load cms %}
 
 {% block delete_partial %}
 <form  method="post" action="{{model|url_delete:object.pk}}" class="js-{{model|model_name_lower}}-delete-form">

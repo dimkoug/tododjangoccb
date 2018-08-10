@@ -1,6 +1,6 @@
-from .cms import (CmsListView, CmsDetailView, CmsCreateView,
-                  CmsUpdateView, CmsDeleteView)
-from .ajax_views import (AjaxCreateView, AjaxUpdateView, AjaxDeleteView)
+from cms.views import (CmsListView, CmsDetailView, CmsCreateView,
+                       CmsUpdateView, CmsDeleteView)
+from cms.ajax_views import (AjaxCreateView, AjaxUpdateView, AjaxDeleteView)
 from .models import Todo
 from .forms import TodoForm
 

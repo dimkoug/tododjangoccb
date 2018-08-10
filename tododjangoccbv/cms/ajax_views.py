@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 
 
 class AjaxListView:
-    ajax_list = 'ajax/partial_list.html'
+    ajax_list = 'cms/ajax/partial_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -14,8 +14,8 @@ class AjaxListView:
 
 
 class AjaxCreateView:
-    ajax_partial = 'ajax/create_partial.html'
-    ajax_list = 'ajax/partial_list.html'
+    ajax_partial = 'cms/ajax/create_partial.html'
+    ajax_list = 'cms/ajax/partial_list.html'
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -65,8 +65,8 @@ class AjaxCreateView:
 
 
 class AjaxUpdateView:
-    ajax_partial = 'ajax/update_partial.html'
-    ajax_list = 'ajax/partial_list.html'
+    ajax_partial = 'cms/ajax/update_partial.html'
+    ajax_list = 'cms/ajax/partial_list.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -116,8 +116,8 @@ class AjaxUpdateView:
 
 
 class AjaxDeleteView:
-    ajax_partial = 'ajax/delete_partial.html'
-    ajax_list = 'ajax/partial_list.html'
+    ajax_partial = 'cms/ajax/delete_partial.html'
+    ajax_list = 'cms/ajax/partial_list.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

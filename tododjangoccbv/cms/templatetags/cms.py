@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 register = template.Library()
 
 
-@register.inclusion_tag('ajax/button_partial.html')
+@register.inclusion_tag('cms/ajax/button_partial.html')
 def show_modal_button(model):
     '''
     model is object

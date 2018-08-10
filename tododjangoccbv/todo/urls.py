@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .patterns import apps_dict, get_patterns
+from cms.patterns import apps_dict, get_patterns
 from .views import TodoListView
 
 apps_dict['todo'] = {

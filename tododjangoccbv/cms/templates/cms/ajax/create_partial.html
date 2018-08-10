@@ -1,4 +1,4 @@
-{% load model_extracts %}
+{% load cms %}
 
 {% block create_partial %}
 <form  method="post" action="{{model|url_create}}" class="js-{{model|model_name_lower}}-create-form" novalidate>
@@ -11,7 +11,7 @@
 
   </div>
   <div class="modal-body">
-    {% include 'ajax/form_partial.html'  %}
+    {% include 'cms/ajax/form_partial.html'  %}
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
