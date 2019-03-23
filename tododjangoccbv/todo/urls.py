@@ -13,5 +13,3 @@ urlpatterns = [
 ]
 
 urlpatterns += get_patterns(apps_dict=apps_dict)
-
-print(urlpatterns)

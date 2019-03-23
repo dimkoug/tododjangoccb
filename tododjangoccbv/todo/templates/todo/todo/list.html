@@ -2,38 +2,36 @@
 {% load cms %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="center">{% create_title 'List' %}</h1>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-12">
-    <button type="button" class="btn btn-primary float-right js-create" data-url="{% create_url 'create' %}">
-      <span class="fas fa-plus"></span>
-        {% create_title 'Create' %}
-      </button>
-  </div>
-</div>
-<hr>
   <div class="row">
-    <table id="table" class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% get_model_name as model_name %}
-        {% with template_name=model_name|add:"_list_partial.html" %}
-          {% include "ajax/"|add:template_name %}
-        {% endwith %}
-      </tbody>
-    </table>
+    <div class="col-12">
+      <h1 class="center">{% create_title 'List' %}</h1>
+    </div>
   </div>
-
-
+  <hr>
+  <div class="row">
+    <div class="col-12">
+      <button type="button" class="btn btn-primary float-right js-create" data-url="{% create_url 'create' %}">
+        <span class="fas fa-plus"></span>
+          {% create_title 'Create' %}
+        </button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+      <table id="table" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% get_model_name as model_name %}
+          {% with template_name=model_name|add:"_list_partial.html" %}
+            {% include "ajax/"|add:template_name %}
+          {% endwith %}
+        </tbody>
+      </table>
+   </div>
 {% endblock %}

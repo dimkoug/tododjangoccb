@@ -16,17 +16,14 @@ class TodoDetailView(CmsDetailView):
 
 
 class TodoCreateView(AjaxCreateUpdateView, CmsCreateView):
-    ajax_list = 'todo/todo/partial_list.html'
     model = Todo
     form_class = TodoForm
 
 
 class TodoUpdateView(AjaxCreateUpdateView, CmsUpdateView):
-    ajax_list = 'todo/todo/partial_list.html'
     model = Todo
     form_class = TodoForm
 
 
 class TodoDeleteView(AjaxDeleteView, CmsDeleteView):
-    ajax_list = 'todo/todo/partial_list.html'
     model = Todo

@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="" id="form" method="post" novalidate>{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-</form>
-
-
+  <form action="" id="form" method="post" novalidate>{% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+  </form>
 {% endblock content %}

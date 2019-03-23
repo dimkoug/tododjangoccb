@@ -2,20 +2,18 @@
 {% load cms %}
 
 {% block partial_list %}
-{% for object in object_list %}
-<tr>
-  <td>{{object.pk}}</td>
-  <td><a href="{% create_object_url object 'detail' %}">{{object}}</a></td>
-  <td>
-    <button type="button" class="btn btn-warning js-update" data-url="{% create_object_url object 'update' %}">
-        <i class="fas fa-edit"></i>
-      </button>
-      <button type="button" class="btn btn-danger js-delete" data-url="{% create_object_url object 'delete' %}">
-  <i class="fas fa-times"></i>
-        </button>
-  </td>
-</tr>
-{% endfor %}
-
-
+  {% for object in object_list %}
+    <tr>
+      <td>{{object.pk}}</td>
+      <td><a href="{% create_object_url object 'detail' %}">{{object}}</a></td>
+      <td>
+          <button type="button" class="btn btn-warning js-update" data-url="{% create_object_url object 'update' %}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-danger js-delete" data-url="{% create_object_url object 'delete' %}">
+            <i class="fas fa-times"></i>
+          </button>
+      </td>
+    </tr>
+  {% endfor %}
 {% endblock partial_list %}
