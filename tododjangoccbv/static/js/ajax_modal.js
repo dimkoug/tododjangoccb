@@ -36,13 +36,6 @@ $(document).ready(function(){
     return false;
   };
 
-  $("body").on('click', '.js-create', loadForm);
-  $("body").on('submit', '.js-create-form', saveForm);
-  // Update {{model}}
-  $("body").on("click", '.js-update', loadForm);
-  $("body").on('submit', '.js-update-form', saveForm)
-  // Delete {{model}}
-
-  $("body").on('click', '.js-delete', loadForm);
-  $("body").on('submit', '.js-delete-form', saveForm);
+  $("body").on('click', '.js-load-form', loadForm);
+  $("body").on('submit', '.js-save-form', saveForm);
 })
