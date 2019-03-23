@@ -1,7 +1,5 @@
-{% extends 'cms/ajax/partial_list.html' %}
 {% load cms %}
 
-{% block partial_list %}
 {% for object in object_list %}
 <tr>
   <td>{{object.pk}}</td>
@@ -16,6 +14,3 @@
   </td>
 </tr>
 {% endfor %}
-
-
-{% endblock partial_list %}

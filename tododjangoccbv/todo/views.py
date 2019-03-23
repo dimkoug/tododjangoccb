@@ -1,6 +1,6 @@
 from cms.views import (CmsListView, CmsDetailView, CmsCreateView,
                        CmsUpdateView, CmsDeleteView)
-from cms.ajax_views import (AjaxCreateView, AjaxUpdateView, AjaxDeleteView)
+from cms.ajax_views import (AjaxCreateUpdateView, AjaxDeleteView)
 from .models import Todo
 from .forms import TodoForm
 
@@ -15,13 +15,13 @@ class TodoDetailView(CmsDetailView):
     model = Todo
 
 
-class TodoCreateView(AjaxCreateView, CmsCreateView):
+class TodoCreateView(AjaxCreateUpdateView, CmsCreateView):
     ajax_list = 'todo/todo/partial_list.html'
     model = Todo
     form_class = TodoForm
 
 
-class TodoUpdateView(AjaxUpdateView, CmsUpdateView):
+class TodoUpdateView(AjaxCreateUpdateView, CmsUpdateView):
     ajax_list = 'todo/todo/partial_list.html'
     model = Todo
     form_class = TodoForm

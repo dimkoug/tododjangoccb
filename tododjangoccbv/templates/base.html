@@ -1,0 +1,30 @@
+{% load static from staticfiles  %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script src="{% static 'js/django_ajax.js' %}"></script>
+      <script src="{% static 'js/ajax_modal.js' %}"></script>
+    {% block head %}{% endblock %}
+  </head>
+  <body {% block body_attrs %}{% endblock %} id="{% block page_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+      {% include 'partials/navbar.html' %}
+        <main role="main" class="container">
+            {% block content %}{% endblock %}
+
+            <div class="modal fade" id="modal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+              </div>
+            </div>
+        </main>
+  </body>
+</html>

@@ -1,38 +1,24 @@
-{% extends "todo/base.html" %}
+{% extends "base.html" %}
 {% load cms %}
-{% block scripts %}
-{{ block.super }}
-<script>
-
-  function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie != '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-              var cookie = jQuery.trim(cookies[i]);
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue;
-  }
-
-  var csrftoken = getCookie('csrftoken');
-</script>
-
-{% endblock scripts %}
-
-
 
 {% block content %}
-  <div class="row">
-    {% show_modal_button model %}
+<div class="row">
+  <div class="col-12">
+    <h1 class="center">{% create_title 'List' %}</h1>
   </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-12">
+    <button type="button" class="btn btn-primary float-right js-create" data-url="{% create_url 'create' %}">
+      <span class="fas fa-plus"></span>
+        {% create_title 'Create' %}
+      </button>
+  </div>
+</div>
+<hr>
   <div class="row">
-    <table id="{{model|model_name_lower}}-table" class="table">
+    <table id="table" class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -41,7 +27,10 @@
         </tr>
       </thead>
       <tbody>
-        {% include 'todo/todo/partial_list.html' %}
+        {% get_model_name as model_name %}
+        {% with template_name=model_name|add:"_list_partial.html" %}
+          {% include "ajax/"|add:template_name %}
+        {% endwith %}
       </tbody>
     </table>
   </div>
