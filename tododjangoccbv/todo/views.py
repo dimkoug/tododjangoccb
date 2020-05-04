@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from cms.ajax_views import (AjaxCreateView , AjaxUpdateView, AjaxDeleteView)
+from cms.ajax_views import (AjaxDetailView, AjaxCreateView , AjaxUpdateView, AjaxDeleteView)
 from cms.mixins import ModelMixin
 from .models import Todo
 from .forms import TodoForm
@@ -12,7 +12,7 @@ class TodoList(ModelMixin, ListView):
     model = Todo
 
 
-class TodoDetail(ModelMixin, DetailView):
+class TodoDetail(AjaxDetailView, ModelMixin, DetailView):
     ajax_partial = 'todo/partials/todo_detail_partial.html'
     model = Todo
 
