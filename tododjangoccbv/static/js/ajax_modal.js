@@ -4,7 +4,7 @@ $(document).ready(function(){
   var loadForm = function() {
     var btn = $(this);
     $.ajax({
-      url: btn.attr("data-url"),
+      url: btn.attr("href"),
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
@@ -14,6 +14,7 @@ $(document).ready(function(){
         $("#modal .modal-content").html(data.html_form);
       }
     });
+    return false;
   };
 
   var saveForm = function() {

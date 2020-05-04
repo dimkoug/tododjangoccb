@@ -1,7 +1,7 @@
 {% load cms %}
 
 {% block create_partial %}
-<form  method="post" action="{% if not form.instance.pk %}{% create_url 'create' %}{% else %}{% create_object_url form.instance 'update' %}{% endif %}" class="js-save-form">
+<form  method="post" action="{% if not form.instance.pk %}{% get_url 'create' %}{% else %}{% create_object_url 'update' form.instance  %}{% endif %}" class="js-save-form">
   {% csrf_token %}
   <div class="modal-header">
     <h4 class="modal-title">{% if not form.instance.pk %}{% create_title 'Create' %} {% else %} {{form.instance}} Update {% endif %}</h4>

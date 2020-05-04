@@ -3,12 +3,12 @@
 {% for object in object_list %}
 <tr>
   <td>{{object.pk}}</td>
-  <td><a href="{% create_object_url object 'detail' %}">{{object}}</a></td>
+  <td><a href="{% get_url 'detail' object  %}">{{object}}</a></td>
   <td>
-    <button type="button" class="btn btn-warning js-load-form" data-url="{% create_object_url object 'update' %}">
+    <button type="button" class="btn btn-warning js-load-form" data-url="{% get_url  'update' object  %}">
         <i class="fas fa-edit"></i>
       </button>
-      <button type="button" class="btn btn-danger js-load-form" data-url="{% create_object_url object 'delete' %}">
+      <button type="button" class="btn btn-danger js-load-form" data-url="{% get_url 'delete' object  %}">
   <i class="fas fa-times"></i>
         </button>
   </td>

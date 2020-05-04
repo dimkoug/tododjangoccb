@@ -1,15 +1,13 @@
 from django.urls import path
 
-from cms.patterns import apps_dict, get_patterns
-from .views import TodoListView
+from .views import TodoList, TodoDetail, TodoCreate, TodoUpdate, TodoDelete
 
-apps_dict['todo'] = {
-    'app_name': 'todo',
-    'filename': 'views'
-}
 
+app_name = 'todo'
 urlpatterns = [
-    path('', TodoListView.as_view(), name='todo-list'),
+    path('', TodoList.as_view(), name='todo-list'),
+    path('<int:pk>/', TodoDetail.as_view(), name='todo-detail'),
+    path('create/', TodoCreate.as_view(), name='todo-create'),
+    path('update/<int:pk>/', TodoUpdate.as_view(), name='todo-update'),
+    path('delete/<int:pk>/', TodoDelete.as_view(), name='todo-delete'),
 ]
-
-urlpatterns += get_patterns(apps_dict=apps_dict)

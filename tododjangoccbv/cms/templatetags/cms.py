@@ -10,21 +10,23 @@ def create_title(context, format_string):
 
 
 @register.simple_tag(takes_context=True)
-def create_url(context, format_string):
+def get_url(context, action, obj=None):
     model = context['model']
     app = model._meta.app_label
-    model_name = model.__name__.lower()
-    return reverse_lazy('{}-{}-{}'.format(app, model_name, format_string))
-
-
-@register.simple_tag
-def create_object_url(object, format_string):
-    app = object._meta.app_label
-    model_name = object.__class__.__name__.lower()
-    url_link = reverse_lazy(
-        '{}-{}-{}'.format(app, model_name, format_string),
-        kwargs={'pk': object.pk})
-    return url_link
+    lower_name = model.__name__.lower()
+    if not obj:
+        url_string = '{}:{}-{}'.format(app, lower_name, action)
+        url = reverse_lazy(url_string)
+    else:
+        lower_name = obj.__class__.__name__.lower()
+        url_string = '{}:{}-{}'.format(app, lower_name, action)
+        if(hasattr(obj, 'uuid')):
+            url = reverse_lazy(url_string, kwargs={'uuid': obj.uuid})
+        elif(hasattr(obj, 'slug')):
+            url = reverse_lazy(url_string, kwargs={'slug': obj.slug})
+        else:
+            url = reverse_lazy(url_string, kwargs={'pk': obj.pk})
+    return url
 
 
 @register.simple_tag(takes_context=True)

@@ -22,6 +22,14 @@ def checkPopup(obj, check):
         )
 
 
+
+class ModelMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model'] = self.model
+        return context
+
+
 class TabMixin:
     def form_valid(self, form):
         if self.request.GET.get('_popup'):
@@ -66,7 +74,7 @@ class ProtectedViewMixin:
 class SuccessUrl(BaseMixin):
     def get_success_url(self):
         data = self.get_data()
-        return reverse_lazy('{}-{}-{}'.format(
+        return reverse_lazy('{}:{}-{}'.format(
             data['app_label'], data['app_model'], data['url_name']))
 
 
@@ -93,5 +101,5 @@ class AbsoluteUrlMixin(BaseMixin):
             url_name = 'detail'
         if slug:
             kwargs['slug'] = self.slug
-        return reverse_lazy('{}-{}-{}'.format(data['app_label'], data[
+        return reverse_lazy('{}:{}-{}'.format(data['app_label'], data[
                             'app_model'], url_name), kwargs=kwargs)

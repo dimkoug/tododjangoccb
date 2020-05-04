@@ -1,0 +1,27 @@
+{% load cms %}
+
+<form  method="post" action="{% if not form.instance.pk %}{% get_url 'create' %}{% else %}{% get_url  'update' form.instance %}{% endif %}" class="js-save-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h4 class="modal-title">{% if not form.instance.pk %}Create{% else %} {{form.instance}} Update {% endif %}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+    {% for field in form %}
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{field}}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">{% if not form.instance.pk %}Create {% else %} {{form.instance}} Update {% endif %}</button>
+  </div>
+</form>

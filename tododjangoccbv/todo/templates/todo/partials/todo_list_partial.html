@@ -1,0 +1,11 @@
+{% load cms %}
+{% for object in object_list %}
+<tr>
+  <td>{{object.pk}}</td>
+  <td><a href="{% get_url 'detail' object %}" class="js-load-form">{{object}}</a></td>
+  <td>
+    <a href="{% get_url 'update' object %}" class="btn btn-warning js-load-form">Update</a>
+    <a href="{% get_url 'delete' object %}" class="btn btn-danger js-load-form">Delete</a>
+  </td>
+</tr>
+{% endfor %}

@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="{% url 'todo-list' %}">TODO MANAGEMENT</a>
+  <a class="navbar-brand" href="{% url 'todo:todo-list' %}">TODO MANAGEMENT</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  {% url 'todo-list' as todo_url %}
+  {% url 'todo:todo-list' as todo_url %}
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.path == todo_url %}active {% endif %}">
