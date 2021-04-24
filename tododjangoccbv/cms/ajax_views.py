@@ -1,100 +1,74 @@
-from django.http import JsonResponse
-from django import template
-from django.template.loader import render_to_string
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .views import (
+    CoreListView, CoreDetailView, CoreCreateView,
+    CoreUpdateView, CoreDeleteView
+)
+from .mixins import (
+    AjaxCreateMixin,AjaxUpdateMixin,AjaxDetailMixin,AjaxDeleteMixin,
+    PassRequestToFormViewMixin, ModelMixin
+)
 
 
-class CreateUpdateForm:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['object_list'] = self.get_queryset()
-        return context
 
-    def form_valid(self, form):
-        data = dict()
-        context = self.get_context_data()
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-            data['list'] = render_to_string(
-                self.ajax_list_partial, context, self.request)
-        else:
-            data['form_is_valid'] = False
-        data['html_form'] = render_to_string(
-            self.ajax_partial, context, request=self.request)
+class AjaxCreateView(AjaxCreateMixin, PassRequestToFormViewMixin,
+                     ModelMixin, CreateView):
+    template = ''
+    ajax_partial = ''
+    ajax_list_partial = ''
+    model_name = ''
+    app = ''
+    def dispatch(self, *args, **kwargs):
+        self.template = 'form'
+        self.app = self.model._meta.app_label
+        self.model_name = self.model.__name__.lower()
+        self.ajax_partial = '{}/partials/{}_form_partial.html'.format(self.app,self.model_name)
+        self.ajax_list_partial = '{}/partials/{}_list_partial.html'.format(self.app,self.model_name)
+        return super().dispatch(*args, **kwargs)
 
-        if self.request.is_ajax():
-            return JsonResponse(data)
-        else:
-            return super().form_valid(form)
+class AjaxUpdateView(AjaxUpdateMixin, PassRequestToFormViewMixin,
+                     ModelMixin, UpdateView):
+    template = ''
+    ajax_partial = ''
+    ajax_list_partial = ''
+    model_name = ''
+    app = ''
+    def dispatch(self, *args, **kwargs):
+        self.template = 'form'
+        self.app = self.model._meta.app_label
+        self.model_name = self.model.__name__.lower()
+        self.ajax_partial = '{}/partials/{}_form_partial.html'.format(self.app,self.model_name)
+        self.ajax_list_partial = '{}/partials/{}_list_partial.html'.format(self.app,self.model_name)
+        return super().dispatch(*args, **kwargs)
 
 
-class AjaxListView:
-    def get(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
-        context = self.get_context_data()
-        if request.is_ajax():
-            html_form = render_to_string(
-                self.ajax_partial, context, request)
-            return JsonResponse({'html_form': html_form})
-        else:
-            return super().get(request, *args, **kwargs)
+class AjaxDetailView(AjaxDetailMixin, ModelMixin, DetailView):
+    template = ''
+    ajax_partial = ''
+    ajax_list_partial = ''
+    model_name = ''
+    app = ''
+    def dispatch(self, *args, **kwargs):
+        self.template = 'detail'
+        self.app = self.model._meta.app_label
+        self.model_name = self.model.__name__.lower()
+        self.ajax_partial = '{}/partials/{}_detail_partial.html'.format(self.app,self.model_name)
+        return super().dispatch(*args, **kwargs)
 
-class AjaxDetailView:
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data()
-        if request.is_ajax():
-            html_form = render_to_string(
-                self.ajax_partial, context, request)
-            return JsonResponse({'html_form': html_form})
-        else:
-            return super().get(request, *args, **kwargs)
 
-class AjaxCreateView(CreateUpdateForm):
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        context = self.get_context_data()
-
-        if request.is_ajax():
-            html_form = render_to_string(
-                self.ajax_partial, context, request)
-            return JsonResponse({'html_form': html_form})
-        else:
-            return super().get(request, *args, **kwargs)
-
-class AjaxUpdateView(CreateUpdateForm):
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data()
-        if request.is_ajax():
-            html_form = render_to_string(
-                self.ajax_partial, context, request)
-            return JsonResponse({'html_form': html_form})
-        else:
-            return super().get(request, *args, **kwargs)
-
-class AjaxDeleteView:
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data()
-        if request.is_ajax():
-            html_form = render_to_string(
-                self.ajax_partial, context, request)
-
-            return JsonResponse({'html_form': html_form})
-        else:
-            return super().get(request, *args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        if self.request.is_ajax():
-            self.object = self.get_object()
-            self.object.delete()
-            data = dict()
-            data['form_is_valid'] = True
-            context = self.get_context_data()
-            context['object_list'] = self.get_queryset()
-            data['list'] = render_to_string(
-                self.ajax_list_partial, context, self.request)
-            return JsonResponse(data)
-        else:
-            return self.delete(*args, **kwargs)
+class AjaxDeleteView(AjaxDeleteMixin, PassRequestToFormViewMixin,
+                     ModelMixin, DeleteView):
+    template = ''
+    ajax_partial = ''
+    ajax_list_partial = ''
+    model_name = ''
+    app = ''
+    def dispatch(self, *args, **kwargs):
+        self.template = 'confirm_delete'
+        self.app = self.model._meta.app_label
+        self.model_name = self.model.__name__.lower()
+        self.ajax_partial = '{}/partials/{}_confirm_delete_partial.html'.format(self.app,self.model_name)
+        self.ajax_list_partial = '{}/partials/{}_list_partial.html'.format(self.app,self.model_name)
+        return super().dispatch(*args, **kwargs)

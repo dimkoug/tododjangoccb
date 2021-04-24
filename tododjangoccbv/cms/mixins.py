@@ -1,105 +1,194 @@
 from django.urls import reverse_lazy
 from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 
 
-def checkPopup(obj, check):
-    if check == 1:
-        return HttpResponse(
-            '''
-            <script type="text/javascript">
-                window.close();
-                window.opener.location.reload();
-            </script>
-            '''
-        )
-    else:
-        return HttpResponse(
-        '''<script type="text/javascript">
-        opener.dismissAddAnotherPopup(window, "{}", "{}");
-        </script>'''.format(obj.pk, obj)
-        )
-
-
+class DynamicTemplateMixin:
+    '''
+    Create template dynamically
+    '''
+    def get_template_names(self):
+        model_name = self.model.__name__.lower()
+        view_template = ""
+        app = self.model._meta.app_label
+        if not hasattr(self, 'template'):
+            raise AttributeError(
+                "Add template attribute to your {}  for example if list view"
+                " then add template='list' appropriate values"
+                " list,detail,form, confirm_delete".format(self.__class__.__name__)
+            )
+        view_template =  "{}/{}_{}.html".format(app,model_name, self.template)
+        return [view_template]
 
 class ModelMixin:
+    '''
+    Add  app and model to context
+    '''
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['model'] = self.model
+        context['model_name'] = self.model.__name__.lower()
+        context['app_name'] = self.model._meta.app_label
+        if hasattr(self, 'template'):
+            context['page_title'] = self.model.__name__.capitalize() + ' ' + self.template.capitalize()
+        print(self.template)
         return context
 
-
-class TabMixin:
-    def form_valid(self, form):
-        if self.request.GET.get('_popup'):
-            form.save()
-            tab = self.tab if hasattr(self, 'tab') else None
-            if tab:
-                return HttpResponse(
-                    '''<script type="text/javascript">
-                    opener.dismissPopupAndReload(window, "%s");
-                    </script>''' % self.tab
-                )
-            else:
-                obj = form.save()
-                if 'is_list' in self.kwargs:
-                    is_list = int(self.kwargs['is_list'])
-                else:
-                    is_list = int(self.request.GET.get('is_list'))
-                check = is_list
-                a = checkPopup(obj, check)
-                return a
-        else:
-            return super(TabMixin, self).form_valid(form)
-
-
-class BaseMixin:
-    def get_data(self):
-        url_name = self.url_name if hasattr(self, 'url_name') else 'list'
-        return {
-            'app_label': self.model._meta.app_label,
-            'app_model': self.model.__name__.lower(),
-            'url_name': url_name
-        }
-
-
-class ProtectedViewMixin:
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ProtectedViewMixin, self).dispatch(*args, **kwargs)
-
-
-class SuccessUrl(BaseMixin):
+class SuccessUrlMixin:
     def get_success_url(self):
-        data = self.get_data()
-        return reverse_lazy('{}:{}-{}'.format(
-            data['app_label'], data['app_model'], data['url_name']))
+        model_name = self.model.__name__.lower()
+        app = self.model._meta.app_label
+        return reverse_lazy("{}:{}-list".format(app, model_name))
 
 
-class AbsoluteUrlMixin(BaseMixin):
-    '''
-    Example:
-        class Category(AbsoluteUrlMixin, models.Model):
-            name = models.CharField(max_length=100)
+class ObjectMixin:
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data()
+        if request.is_ajax():
+            html_form = render_to_string(
+                self.ajax_partial, context, request)
+            return JsonResponse({'html_form': html_form})
+        else:
+            return super().get(request, *args, **kwargs)
 
-            url_name = 'update'
 
-        I use the convention as pattern:
+class AjaxCreateMixin:
 
-            app_name-model_name-detail
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = self.get_queryset()
+        return context
 
-    '''
-    def get_absolute_url(self):
-        kwargs = {}
-        slug = hasattr(self, 'slug')
-        url_name = hasattr(self, 'url_name')
-        kwargs['pk'] = self.pk
-        data = self.get_data()
-        if not url_name:
-            url_name = 'detail'
-        if slug:
-            kwargs['slug'] = self.slug
-        return reverse_lazy('{}:{}-{}'.format(data['app_label'], data[
-                            'app_model'], url_name), kwargs=kwargs)
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        context = self.get_context_data()
+        if request.is_ajax():
+            html_form = render_to_string(
+                self.ajax_partial, context, request)
+            return JsonResponse({'html_form': html_form})
+        else:
+            return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        data = dict()
+        context = self.get_context_data()
+        if form.is_valid():
+            obj = form.save()
+            if obj:
+                data['form_is_valid'] = True
+                data['list'] = render_to_string(
+                    self.ajax_list_partial, context, self.request)
+            else:
+                data['form_is_valid'] = False
+                data['html_form'] = render_to_string(
+                    self.ajax_partial, context, request=self.request)
+            if self.request.is_ajax():
+                return JsonResponse(data)
+            else:
+                return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+
+
+class AjaxUpdateMixin(ObjectMixin):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = self.get_queryset()
+        return context
+
+    def form_valid(self, form):
+        data = dict()
+        context = self.get_context_data()
+        if form.is_valid():
+            obj = form.save()
+            if obj:
+                data['form_is_valid'] = True
+                data['list'] = render_to_string(
+                    self.ajax_list_partial, context, self.request)
+            else:
+                data['form_is_valid'] = False
+            data['html_form'] = render_to_string(
+                self.ajax_partial, context, request=self.request)
+            if self.request.is_ajax():
+                return JsonResponse(data)
+            else:
+                return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
+
+
+class AjaxDetailMixin(ObjectMixin):
+    pass
+
+
+
+
+class AjaxDeleteMixin(ObjectMixin):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = self.get_queryset()
+        return context
+
+    def post(self, *args, **kwargs):
+        if self.request.is_ajax():
+            self.object = self.get_object()
+            self.object.delete()
+            data = dict()
+            data['form_is_valid'] = True
+            context = self.get_context_data()
+            context['object_list'] = self.get_queryset()
+            data['list'] = render_to_string(
+                self.ajax_list_partial, context, self.request)
+            return JsonResponse(data)
+        else:
+            return self.delete(*args, **kwargs)
+
+
+class PassRequestToFormViewMixin:
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+
+class FormMixin:
+    def form_valid(self, form):
+        obj = form.save()
+        model_name = self.model.__name__.lower()
+        app = self.model._meta.app_label
+        if 'new' in self.request.POST:
+            return redirect(reverse_lazy("{}:{}-create".format(app, model_name)))
+        if 'continue' in self.request.POST:
+            return redirect(reverse_lazy("{}:{}-update".format(app, model_name), kwargs={"pk":obj.pk}))
+        if not self.request.is_ajax():
+            messages.success(
+                self.request, 'Your {} was proccesed successfully!'.format(
+                    self.model.__name__))
+        return super().form_valid(form)
+
+    def form_invalid(self, form, **kwargs):
+        data = dict()
+        for field in form.errors:
+            form[field].field.widget.attrs['class'] += ' is-invalid'
+        context = self.get_context_data(form=form)
+        data['html_form'] = render_to_string(
+            self.ajax_partial, context, request=self.request)
+        if self.request.is_ajax():
+            return JsonResponse(data)
+        else:
+            messages.error(
+                self.request, 'error ocured for {}'.format(
+                    self.model.__name__))
+            return self.render_to_response(self.get_context_data(form=form))
+
+
+class BaseViewMixin(DynamicTemplateMixin, ModelMixin):
+    pass
+
+class FormViewMixin(BaseViewMixin,SuccessUrlMixin,PassRequestToFormViewMixin, FormMixin):
+    pass

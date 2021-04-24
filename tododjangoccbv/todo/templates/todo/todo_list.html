@@ -21,7 +21,8 @@
         </tr>
       </thead>
       <tbody>
-        {% include "todo/partials/todo_list_partial.html" %}
+        {% get_template_name as name %}
+        {% include name %}
       </tbody>
 
     </table>

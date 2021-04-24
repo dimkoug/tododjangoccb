@@ -33,3 +33,12 @@ def get_url(context, action, obj=None):
 def get_model_name(context):
     model = context['model']
     return model.__name__.lower()
+
+
+@register.simple_tag(takes_context=True)
+def get_template_name(context, *args):
+    model = context['model']
+    app = model._meta.app_label
+    lower_name = model.__name__.lower()
+    template_name = "{}/partials/{}_list_partial.html".format(app,lower_name)
+    return template_name
