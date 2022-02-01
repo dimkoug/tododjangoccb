@@ -19,10 +19,18 @@ class TodoCreate(AjaxCreateView):
     model = Todo
     form_class = TodoForm
 
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
 
 class TodoUpdate(AjaxUpdateView):
     model = Todo
     form_class = TodoForm
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class TodoDelete(AjaxDeleteView):

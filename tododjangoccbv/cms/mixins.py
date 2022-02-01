@@ -1,8 +1,8 @@
+from django.shortcuts import redirect
+from django.contrib import messages
 from django.urls import reverse_lazy
-from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
 
 
 class ModelMixin:
@@ -52,8 +52,7 @@ class AjaxCreateMixin:
         data = dict()
         context = self.get_context_data()
         if form.is_valid():
-            obj = form.save()
-            if obj:
+            if form.instance.pk:
                 data['form_is_valid'] = True
             else:
                 data['form_is_valid'] = False
@@ -64,15 +63,13 @@ class AjaxCreateMixin:
         return super().form_valid(form)
 
 
-
 class AjaxUpdateMixin(ObjectMixin):
 
     def form_valid(self, form):
         data = dict()
         context = self.get_context_data()
         if form.is_valid():
-            obj = form.save()
-            if obj:
+            if form.instance.pk:
                 data['form_is_valid'] = True
             else:
                 data['form_is_valid'] = False
@@ -142,5 +139,7 @@ class FormMixin:
 class BaseViewMixin(ModelMixin):
     pass
 
-class FormViewMixin(BaseViewMixin,SuccessUrlMixin,PassRequestToFormViewMixin, FormMixin):
+
+class FormViewMixin(BaseViewMixin, SuccessUrlMixin,
+                    PassRequestToFormViewMixin, FormMixin):
     pass
