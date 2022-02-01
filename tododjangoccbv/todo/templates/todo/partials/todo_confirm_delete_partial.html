@@ -1,6 +1,6 @@
 {% load cms %}
 
-<form  method="post" action="{% get_url 'delete' object %}" class="js-save-form">
+<form  method="post" action="{% get_url 'delete' object  %}" class="js-save-form">
   {% csrf_token %}
   <div class="modal-header">
     <h4 class="modal-title">Confirm {{object}} deletion</h4>
