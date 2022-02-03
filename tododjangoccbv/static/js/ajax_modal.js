@@ -1,8 +1,8 @@
 'use strict';
 (function(w,d,$){
   $(d).ready(function(){
-    var loadForm = function() {
-      var btn = $(this);
+    let loadForm = function() {
+      let btn = $(this);
       $.ajax({
         url: btn.attr("href"),
         type: 'get',
@@ -17,8 +17,8 @@
       return false;
     };
 
-    var saveForm = function() {
-      var form = $(this);
+    let saveForm = function() {
+      let form = $(this);
       $.ajax({
         url: form.attr("action"),
         data: form.serialize(),
